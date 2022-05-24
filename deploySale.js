@@ -73,6 +73,7 @@ export default async function deploySale(signer, verifyTierContract) {
     console.log('Result: Sale Contract:', saleContract); // the Sale contract and corresponding address
     return saleContract;
   } catch (err) {
+    console.log(err);
     throw new Error('DeploySaleError', `Error deploying Sale`, err);
   }
 }

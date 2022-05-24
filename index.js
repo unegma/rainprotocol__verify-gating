@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import deployVerify from "./deployVerify.js";
 import deployVerifyTier from "./deployVerifyTier.js";
 import deploySale from "./deploySale.js";
 const CHAIN_ID = 80001; // Mumbai (Polygon Testnet) Chain ID
@@ -26,7 +27,8 @@ export async function runVerifyGatedSale() {
     console.log('------------------------------'); // separator
 
     // Deploy Contracts
-    const verifyTierContract = await deployVerifyTier(signer); // Deploy Verify Tier Contract to be used in Sale
+    const verifyContract = await deployVerify(signer); // Deploy Verify
+    const verifyTierContract = await deployVerifyTier(signer, verifyContract); // Deploy Verify Tier Contract to be used in Sale
     const saleContract = await deploySale(signer, verifyTierContract); // Deploy Sale
     console.log('------------------------------'); // separator
 
@@ -49,17 +51,24 @@ export async function runVerifyGatedSale() {
       console.log(`Info: Buying from Sale with parameters:`, buyConfig);
       await saleContract.buy(buyConfig); // this should trigger the catch below
     } catch (err) {
-      console.log(`Info: This should have failed because you haven't passed the verification required for taking part`, err); // console log the error which should be a revert
+      console.log(`Info: This should have failed because you haven't been verified to take part`, err); // console log the error which should be a revert
       console.log('------------------------------'); // separator
     }
 
-    console.log(`Info: DO VERIFICATION HERE:`);
-    // todo verification
-    // console.log(`Result: of Verification:`, result);
+    console.log(`Granting you the APPROVER role.`);
+    const grantResult = await verifyContract.grantRole('APPROVER', address); // todo may need to give self approver role
+    console.log(`Info: Grant result:`, grantResult);
 
-    // console.log(`Info: Buying from Sale with parameters:`, buyConfig);
-    // const buyStatus = await saleContract.buy(buyConfig);
-    // console.log(`Info: This should have passed because you haved passed the verification required to take part`, buyStatus);
+    console.log(`Info: Approving You:`);
+    const approvalResult = await verifyContract.approve([{
+      account: address,
+      data: 'ARBITRARY_IPFS_HASH'
+    }])
+    console.log(`Result: of Approval:`, approvalResult);
+
+    console.log(`Info: Buying from Sale with parameters:`, buyConfig);
+    const buyStatus = await saleContract.buy(buyConfig);
+    console.log(`Info: This should have passed because you have passed the verification required to take part`, buyStatus);
 
     console.log('------------------------------'); // separator
     console.log("Info: Done");
