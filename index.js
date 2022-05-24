@@ -56,6 +56,7 @@ export async function runVerifyGatedSale() {
     }
 
     console.log(`Granting you the APPROVER role.`);
+    // ethers.utils.keccak256(ethers.utils.toUtf8Bytes("APPROVER")) // todo might need to be this
     const grantResult = await verifyContract.grantRole('APPROVER', address); // todo may need to give self approver role
     console.log(`Info: Grant result:`, grantResult);
 
