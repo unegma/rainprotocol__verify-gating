@@ -18,12 +18,6 @@ export default async function deployVerify(signer) {
   }
 }
 
-
-// a. Deploy everything (i.e Verify then VerifyTier then Sale)
-// b. Grant approver to Self
-// b. requestApprove for Self
-//   c. approve is submitted by Self for Self
-
   // ah so in a frontend, a user could 'nudge' an approver by clicking a button which calls 'requestApprove'
 // and then maybe link the reader to an article about deleting root privileges and why it is good to do that
 //   another option is to establish a DAO with a governance contract to hold the admin roles
