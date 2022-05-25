@@ -32,14 +32,16 @@ export async function runVerifyGating() {
     // ### Interact with the newly deployed ecosystem
 
     console.log(`Granting you the APPROVER role.`);
-    // ethers.utils.keccak256(ethers.utils.toUtf8Bytes("APPROVER")) // todo might need to be this
-    const grantResult = await verifyContract.grantRole('APPROVER', address); // todo may need to give self approver role
+    const approverRoleHash = await verifyContract.APPROVER();
+    const grantResult = await verifyContract.grantRole(approverRoleHash, address); // todo may need to give self approver role
     console.log(`Info: Grant result:`, grantResult);
 
     console.log(`Info: Approving You:`);
+    const ARBITRARY_IPFS_HASH = 'QmPWiSndGCZNxsBMdKxELfNHbcrxGMCBJjcXRhcWrw9JJ5';
+    // const ARBITRARY_IPFS_HASH = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('QmPWiSndGCZNxsBMdKxELfNHbcrxGMCBJjcXRhcWrw9JJ5'));
     const approvalResult = await verifyContract.approve([{
       account: address,
-      data: 'ARBITRARY_IPFS_HASH'
+      data: ARBITRARY_IPFS_HASH
     }])
     console.log(`Result: of Approval:`, approvalResult);
 

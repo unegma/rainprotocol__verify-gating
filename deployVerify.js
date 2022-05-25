@@ -8,7 +8,7 @@ export default async function deployVerify(signer) {
       admin: address // todo, check this in reality, this will be the address of a trusted third party verifier who will manually do KYC
     }
 
-    console.log("Creating: Verify Contract for Verifying access to a Sale with the following State:", verifyState);
+    console.log("Creating: Verify Contract for Verifying access to a page with the following State:", verifyState);
     const verifyContract = await rainSDK.Verify.deploy(signer, verifyState); // todo should this be then passed to the constructor in the sdk or used as is?
     console.log(`Result: Verify Contract`, verifyContract);
     return verifyContract;
