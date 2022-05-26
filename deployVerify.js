@@ -6,6 +6,7 @@ export default async function deployVerify(signer) {
 
     const verifyState = {
       admin: address // todo, check this in reality, this will be the address of a trusted third party verifier who will manually do KYC
+      // todo what does callback do and why is it set to AddressZero in the tests?
     }
 
     console.log("Creating: Verify Contract for Verifying access to a page with the following State:", verifyState);

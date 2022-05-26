@@ -33,17 +33,25 @@ export async function runVerifyGating() {
 
     console.log(`Granting you the APPROVER role.`);
     const approverRoleHash = await verifyContract.APPROVER();
-    const grantResult = await verifyContract.grantRole(approverRoleHash, address); // todo may need to give self approver role
-    console.log(`Info: Grant result:`, grantResult);
+    // https://docs.ethers.io/v5/api/providers/types/#types--transactions
+      const grantTransaction = await verifyContract.grantRole(approverRoleHash, address); // todo may need to give self approver role
+    const grantTransactionReceipt = await grantTransaction.wait();
+    console.log(`Info: Grant Transaction Receipt:`, grantTransactionReceipt);
 
     console.log(`Info: Approving You:`);
-    const ARBITRARY_IPFS_HASH = 'QmPWiSndGCZNxsBMdKxELfNHbcrxGMCBJjcXRhcWrw9JJ5';
+
+    // const ARBITRARY_IPFS_HASH = 'QmPWiSndGCZNxsBMdKxELfNHbcrxGMCBJjcXRhcWrw9JJ5';
+    // const ARBITRARY_IPFS_HASH = ethers.utils.toUtf8Bytes('QmPWiSndGCZNxsBMdKxELfNHbcrxGMCBJjcXRhcWrw9JJ5');
     // const ARBITRARY_IPFS_HASH = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('QmPWiSndGCZNxsBMdKxELfNHbcrxGMCBJjcXRhcWrw9JJ5'));
-    const approvalResult = await verifyContract.approve([{
+    // console.log(ethers.utils.isBytesLike(ARBITRARY_IPFS_HASH));
+
+    const approvalTransaction = await verifyContract.approve([{
       account: address,
-      data: ARBITRARY_IPFS_HASH
+      // data: ARBITRARY_IPFS_HASH
+      data: []
     }])
-    console.log(`Result: of Approval:`, approvalResult);
+    const approvalTransactionReceipt = await approvalTransaction.wait();
+    console.log(`Result: of Approval Transaction Receipt:`, approvalTransactionReceipt);
 
 
     console.log('------------------------------'); // separator
