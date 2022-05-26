@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 import deployVerify from "./deployVerify.js";
-import deployVerifyTier from "./deployVerifyTier.js";
 const CHAIN_ID = 80001; // Mumbai (Polygon Testnet) Chain ID
 
 // tutorial:
@@ -26,7 +25,6 @@ export async function runVerifyGating() {
 
     // Deploy Contracts
     const verifyContract = await deployVerify(signer); // Deploy Verify
-    const verifyTierContract = await deployVerifyTier(signer, verifyContract); // Deploy Verify Tier Contract to be used in Sale
     console.log('------------------------------'); // separator
 
     // ### Interact with the newly deployed ecosystem
